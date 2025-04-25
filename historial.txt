@@ -1,0 +1,7 @@
+<p><strong>Usuario:</strong> hola</p>
+<p><strong>Bot:</strong> <html>
+<body>
+    <p>¡Hola! ¿En qué puedo ayudarte hoy?</p>
+</body>
+</html></p>
+<hr>
