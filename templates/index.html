@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatbot</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <button id="modo-toggle">🌙 Modo oscuro</button>
+
+    <div class="chat-container">
+      <div id="chat"></div>
+
+      <div class="input-area">
+        <button id="microfono">🎤</button>
+        <input type="text" id="mensaje" placeholder="Escribe o habla..." />
+        <button id="enviar">Enviar</button>
+      </div>
+    </div>
+
+    <audio
+      id="sonido-bot"
+      src="{{ url_for('static', filename='../sound/sonido-bot.mp3') }}"
+    ></audio>
+
+    <script>
+      const chat = document.getElementById("chat");
+      const input = document.getElementById("mensaje");
+      const boton = document.getElementById("enviar");
+      const sonido = document.getElementById("sonido-bot");
+      const modoToggle = document.getElementById("modo-toggle");
+      const microfono = document.getElementById("microfono");
+
+      async function enviarMensaje() {
+        const mensaje = input.value.trim();
+        if (!mensaje) return;
+
+        chat.innerHTML += `<div class="msg user"><span>${mensaje}</span></div>`;
+        input.value = "";
+
+        const res = await fetch("/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: mensaje }),
+        });
+
+        const data = await res.json();
+        chat.innerHTML += `<div class="msg bot">${data.response}</div>`;
+        chat.scrollTop = chat.scrollHeight;
+        sonido.play();
+      }
+
+      boton.addEventListener("click", enviarMensaje);
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") enviarMensaje();
+      });
+
+      modoToggle.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+        modoToggle.textContent = document.body.classList.contains("dark-mode")
+          ? "☀️ Modo claro"
+          : "🌙 Modo oscuro";
+      });
+
+      // 🎤 Reconocimiento de voz
+      const reconocimiento =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (reconocimiento) {
+        const reconocimientoVoz = new reconocimiento();
+        reconocimientoVoz.lang = "es-ES";
+
+        microfono.addEventListener("click", () => {
+          reconocimientoVoz.start();
+        });
+
+        reconocimientoVoz.onresult = (event) => {
+          const texto = event.results[0][0].transcript;
+          input.value = texto;
+          enviarMensaje();
+        };
+      } else {
+        microfono.disabled = true;
+        microfono.textContent = "🚫";
+      }
+    </script>
+  </body>
+</html>
