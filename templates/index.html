@@ -22,10 +22,13 @@
       </div>
     </div>
 
-    <audio
-      id="sonido-bot"
-      src="{{ url_for('static', filename='../sound/sonido-bot.mp3') }}"
-    ></audio>
+    <!-- Audio corregido -->
+    <audio id="sonido-bot">
+      <source
+        src="{{ url_for('static', filename='asound/sonido-bot.mp3') }}"
+        type="audio/mpeg"
+      />
+    </audio>
 
     <script>
       const chat = document.getElementById("chat");
@@ -51,7 +54,11 @@
         const data = await res.json();
         chat.innerHTML += `<div class="msg bot">${data.response}</div>`;
         chat.scrollTop = chat.scrollHeight;
-        sonido.play();
+
+        // Reproducir sonido
+        sonido.play().catch((e) => {
+          console.error("Error reproduciendo el sonido:", e);
+        });
       }
 
       boton.addEventListener("click", enviarMensaje);

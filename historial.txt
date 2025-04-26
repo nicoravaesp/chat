@@ -5,3 +5,11 @@
 </body>
 </html></p>
 <hr>
+<p><strong>Usuario:</strong> hola</p>
+<p><strong>Bot:</strong> <html>
+<body>
+    <strong>¡Hola!</strong><br>
+    <em>¿En qué puedo ayudarte hoy?</em>
+</body>
+</html></p>
+<hr>
