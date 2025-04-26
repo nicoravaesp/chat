@@ -13,3 +13,16 @@
 </body>
 </html></p>
 <hr>
+<p><strong>Usuario:</strong> hola</p>
+<p><strong>Bot:</strong> <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Hola</title>
+</head>
+<body>
+    <h1>¡Hola!</h1>
+    <p>¿Cómo puedo ayudarte hoy?</p>
+</body>
+</html></p>
+<hr>
